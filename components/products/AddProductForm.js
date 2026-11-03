@@ -42,7 +42,9 @@ export default function AddProductForm({
       setCategoryId(data.category_id);
       setSupplierId(data.supplier_id);
 
-      nameRef.current.focus();
+      if (nameRef !== null) {
+        nameRef.current.focus();
+      }
     }
 
     if (id) loadProduct();
@@ -71,7 +73,7 @@ export default function AddProductForm({
 
     id
       ? router.push(
-          `/products?page=${page}&search=${search}&sort=${sort}&order=${order}&limit=${limit}`,
+          `/products?page=${page}&search=${search}&sort=${sort}&order=${order}&limit=${limit}`
         )
       : router.refresh();
 
@@ -84,7 +86,7 @@ export default function AddProductForm({
 
   function handleCancel() {
     router.push(
-      `/products?page=${page}&search=${search}&sort=${sort}&order=${order}&limit=${limit}`,
+      `/products?page=${page}&search=${search}&sort=${sort}&order=${order}&limit=${limit}`
     );
 
     setName("");

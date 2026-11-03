@@ -17,7 +17,8 @@ export default async function SuppliersPage({ searchParams }) {
   } = await searchParams;
 
   const res = await fetch(
-    `http://localhost:3000/api/suppliers?page=${page}&limit=${limit}&search=${search}&sort=${sort}&order=${order}`,
+    process.env.BASE_URL +
+      `/api/suppliers?page=${page}&limit=${limit}&search=${search}&sort=${sort}&order=${order}`
   );
   const { data, meta } = await res.json();
 
@@ -94,7 +95,7 @@ export default async function SuppliersPage({ searchParams }) {
                   | <DeleteButton name={item.name} id={item.id} />
                 </td>
               </tr>
-            ),
+            )
           )}
         </tbody>
       </table>
@@ -102,7 +103,9 @@ export default async function SuppliersPage({ searchParams }) {
       <div>
         {Array.from({ length: meta.totalPages }).map((item, index) => (
           <Link
-            href={`/suppliers?page=${index + 1}&limit=${limit}&search=${search}&sort=${sort}&order=${order}`}
+            href={`/suppliers?page=${
+              index + 1
+            }&limit=${limit}&search=${search}&sort=${sort}&order=${order}`}
             key={index}
             style={{ marginRight: "10px" }}
           >

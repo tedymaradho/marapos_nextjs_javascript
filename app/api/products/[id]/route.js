@@ -20,16 +20,28 @@ export async function PUT(req, { params }) {
     const { id } = await params;
     const { name, price, stock, categoryId, supplierId } = await req.json();
 
+    if (typeof name !== "string" || name.trim() === "")
+      return NextResponse.json({ error: "invalid name" }, { status: 400 });
+
+    if (typeof price !== "number" || price < 0)
+      return NextResponse.json({ error: "invalid price" }, { status: 400 });
+
+    if (typeof stock !== "number" || stock < 0)
+      return NextResponse.json({ error: "invalid stock" }, { status: 400 });
+
     const result = await updateProduct(
       name,
       price,
       stock,
       categoryId,
       supplierId,
-      id,
+      id
     );
 
-    return NextResponse.json({ success: true, result });
+    if (result.affectedRows == 0)
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+
+    return NextResponse.json({ success: true, info: result.info });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

@@ -21,14 +21,14 @@ export default function AddCategoryForm({ id }) {
 
   async function handleAdd() {
     if (id) {
-      await fetch(`http://localhost:3000/api/categories/${id}`, {
+      await fetch(`/api/categories/${id}`, {
         method: "PUT",
         body: JSON.stringify({ name }),
       });
 
       router.push(`/categories?page=1`);
     } else {
-      await fetch(`http://localhost:3000/api/categories`, {
+      await fetch(`/api/categories`, {
         method: "POST",
         body: JSON.stringify({ name }),
       });

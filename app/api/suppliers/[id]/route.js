@@ -18,12 +18,18 @@ export async function PUT(req, { params }) {
     const { id } = await params;
     const { name, phone, address } = await req.json();
 
-    if (!name || typeof name !== "string")
+    if (typeof name !== "string" || name.trim() === "")
       return NextResponse.json({ error: `Invalid name` }, { status: 400 });
 
     const result = await updateSupplier(name, phone, address, id);
 
-    return NextResponse.json(result);
+    if (result.affectedRows === 0)
+      return NextResponse.json(
+        { error: "Supplier not found" },
+        { status: 404 }
+      );
+
+    return NextResponse.json({ success: true, info: result.info });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

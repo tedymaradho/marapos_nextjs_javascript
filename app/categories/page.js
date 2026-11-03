@@ -15,10 +15,10 @@ export default async function CategoriesPage({ searchParams }) {
   } = await searchParams;
 
   const res = await fetch(
-    `http://localhost:3000/api/categories?page=${page}&id=${id}&search=${search}&show=${show}&sort=${sort}&order=${order}`,
+    process.env.BASE_URL + `/api/categories?page=${page}&id=${id}&search=${search}&show=${show}&sort=${sort}&order=${order}`,
     {
       cache: "no-store",
-    },
+    }
   );
   const { data, meta } = await res.json();
 
@@ -96,7 +96,9 @@ export default async function CategoriesPage({ searchParams }) {
       </table>
       {Array.from({ length: meta.totalPages }).map((item, index) => (
         <Link
-          href={`/categories?page=${index + 1}&show=${show}&search=${search}&sort=${sort}&order=${order}`}
+          href={`/categories?page=${
+            index + 1
+          }&show=${show}&search=${search}&sort=${sort}&order=${order}`}
           key={index}
           style={{ border: "1px solid #000", padding: 10 }}
         >

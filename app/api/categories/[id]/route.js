@@ -22,9 +22,18 @@ export async function PUT(req, { params }) {
     const { id } = await params;
     const { name } = await req.json();
 
+    if (typeof name !== "string" || name.trim() === "")
+      return NextResponse.json({ error: "Invalid name" }, { status: 400 });
+
     const result = await updateCategory(id, name);
 
-    return NextResponse.json(result);
+    if (result.affectedRows == 0)
+      return NextResponse.json(
+        { error: "Category not found" },
+        { status: 404 }
+      );
+
+    return NextResponse.json({ success: true, info: result.info });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

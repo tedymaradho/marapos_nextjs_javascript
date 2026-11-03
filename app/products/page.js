@@ -16,16 +16,17 @@ export default async function ProductsPage({ searchParams }) {
   } = await searchParams;
 
   const res = await fetch(
-    `http://localhost:3000/api/products?page=${page}&search=${search}&sort=${sort}&order=${order}&limit=${limit}`,
-    { cache: "no-store" },
+    process.env.BASE_URL +
+      `/api/products?page=${page}&search=${search}&sort=${sort}&order=${order}&limit=${limit}`,
+    { cache: "no-store" }
   );
 
   const { data, meta } = await res.json();
 
-  const resCategories = await fetch(`http://localhost:3000/api/categories`);
+  const resCategories = await fetch(process.env.BASE_URL + `/api/categories`);
   const categories = await resCategories.json();
 
-  const resSuppliers = await fetch(`http://localhost:3000/api/suppliers`);
+  const resSuppliers = await fetch(process.env.BASE_URL + `/api/suppliers`);
   const suppliers = await resSuppliers.json();
 
   function getNextSort(column) {
@@ -186,9 +187,9 @@ export default async function ProductsPage({ searchParams }) {
         </tbody>
       </table>
 
-      <p
-        style={{ marginTop: 10 }}
-      >{`${(meta.page - 1) * meta.limit + 1}-${meta.limit * page > meta.total ? meta.total : meta.limit * page} of ${meta.total} data`}</p>
+      <p style={{ marginTop: 10 }}>{`${(meta.page - 1) * meta.limit + 1}-${
+        meta.limit * page > meta.total ? meta.total : meta.limit * page
+      } of ${meta.total} data`}</p>
 
       <ul
         style={{
@@ -201,7 +202,9 @@ export default async function ProductsPage({ searchParams }) {
         {Array.from({ length: meta.totalPages }).map((_, index) => (
           <li key={index}>
             <Link
-              href={`/products?page=${index + 1}&search=${search}&sort=${sort}&order=${order}&limit=${limit}`}
+              href={`/products?page=${
+                index + 1
+              }&search=${search}&sort=${sort}&order=${order}&limit=${limit}`}
               className={styles.cellTable}
             >
               {index + 1}

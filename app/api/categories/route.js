@@ -1,4 +1,3 @@
-import { db } from "@/lib/db";
 import { addCategory, getCategories } from "@/services/categoryServices";
 import { NextResponse } from "next/server";
 

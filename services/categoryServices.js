@@ -37,8 +37,7 @@ export async function addCategory(name) {
 export async function deleteCategory(id) {
   const [result] = await db.execute(`DELETE FROM categories WHERE id=?`, [id]);
 
-  if (result.affectedRows == 0)
-    return ({ error: "Not found" }, { status: 404 });
+  if (result.affectedRows == 0) return { error: "Not found" }, { status: 404 };
 
   return { success: true };
 }
@@ -49,10 +48,7 @@ export async function updateCategory(id, name) {
     id,
   ]);
 
-  if (result.affectedRows == 0)
-    return ({ error: "Not found" }, { status: 404 });
-
-  return { success: true };
+  return result;
 }
 
 export async function getCategoryById(id) {
